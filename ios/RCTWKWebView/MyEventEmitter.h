@@ -15,7 +15,7 @@
 
 - (void) sendEventWithFileName: (NSString *)fileName;
 
-- (void) sendEventWithFileName: (NSString *)fileName withMimeType: (NSString *)mimeType
+- (void) sendEventWithFileName: (NSString *)fileName withMimeType: (NSString *)mimeType;
 
 @end
 
