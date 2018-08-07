@@ -460,19 +460,20 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   MyEventEmitter* eventEmitter = [MyEventEmitter allocWithZone: nil];
   NSHTTPURLResponse  *response = (NSHTTPURLResponse *)navigationResponse.response;
-  NSString *fileType = [response.suggestedFilename componentsSeparatedByString:@"."].lastObject;
+  NSArray<NSString *> *separatedFileNameArr = [response.suggestedFilename componentsSeparatedByString:@"."];
+  NSString *fileType = separatedFileNameArr.lastObject;
   
-  if (!([fileType isEqualToString:@"jvm1"] || [fileType isEqualToString:@"jsp"] || [fileType isEqualToString:@"aspx"]|| [fileType isEqualToString:@"html"])) {
-    //good suggestedFilename
-    NSLog([NSString stringWithFormat:@"\nFileType = %@ \nSuggestedFileName = %@ \n", fileType, response.suggestedFilename]);
-    [eventEmitter sendEventWithFileName: response.suggestedFilename];
-  } else {
+  if ([fileType isEqualToString:@"jvm1"] || [fileType isEqualToString:@"jsp"] || [fileType isEqualToString:@"aspx"]|| [fileType isEqualToString:@"html"]) {
     NSString* mimeType = response.MIMEType;
     if (![mimeType isEqualToString:@"text/html"]) {
       //bad suggestedFilename
-      NSLog([NSString stringWithFormat:@"\nmimeType = %@ \nSuggestedFileName = %@ \n", mimeType, [response.suggestedFilename componentsSeparatedByString:@"."].firstObject]);
-      [eventEmitter sendEventWithFileName: [response.suggestedFilename componentsSeparatedByString:@"."].firstObject withMimeType:mimeType];
+      NSLog([NSString stringWithFormat:@"\nmimeType = %@ \nSuggestedFileName = %@ \n", mimeType, separatedFileNameArr.firstObject]);
+      [eventEmitter sendEventWithFileName: separatedFileNameArr.firstObject withMimeType:mimeType];
     }
+  } else {
+    //good suggestedFilename
+    NSLog([NSString stringWithFormat:@"\nFileType = %@ \nSuggestedFileName = %@ \n", fileType, response.suggestedFilename]);
+    [eventEmitter sendEventWithFileName: response.suggestedFilename];
   }
   
   decisionHandler(WKNavigationResponsePolicyAllow);
