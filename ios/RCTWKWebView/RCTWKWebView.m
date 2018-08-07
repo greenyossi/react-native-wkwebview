@@ -471,7 +471,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     if (![mimeType isEqualToString:@"text/html"]) {
       //bad suggestedFilename
       NSLog([NSString stringWithFormat:@"\nmimeType = %@ \nSuggestedFileName = %@ \n", mimeType, [response.suggestedFilename componentsSeparatedByString:@"."].firstObject]);
-      [eventEmitter sendEventWithFileName: response.suggestedFilename withMimeType:mimeType];
+      [eventEmitter sendEventWithFileName: [response.suggestedFilename componentsSeparatedByString:@"."].firstObject withMimeType:mimeType];
     }
   }
   
