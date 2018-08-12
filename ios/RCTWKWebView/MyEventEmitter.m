@@ -31,10 +31,14 @@ RCT_EXPORT_MODULE();
     [self sendEventWithName:@"iosFileEvent" body:@{@"fileName": fileName, @"mimeType": mimeType}];
 }
 
+- (void) sendIFrameEventWithURL: (NSString *)url
+{
+    [self sendEventWithName:@"iosIFrameEvent" body:@{@"url": url}];
+}
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"iosFileEvent"];
+    return @[@"iosFileEvent", @"iosIFrameEvent"];
 }
 
 

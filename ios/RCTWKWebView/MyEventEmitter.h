@@ -17,6 +17,8 @@
 
 - (void) sendEventWithFileName: (NSString *)fileName withMimeType: (NSString *)mimeType;
 
+- (void) sendIFrameEventWithURL: (NSString *)url;
+
 @end
 
 

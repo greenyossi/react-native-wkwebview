@@ -522,6 +522,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                                          }];
       _onLoadingStart(event);
     }
+  } else {
+    MyEventEmitter* eventEmitter = [MyEventEmitter allocWithZone: nil];
+    NSLog([NSString stringWithFormat:@"\nIFrame event!\n"]);
+    [eventEmitter sendIFrameEventWithURL: url.absoluteString];
   }
   
   if (isJSNavigation) {
