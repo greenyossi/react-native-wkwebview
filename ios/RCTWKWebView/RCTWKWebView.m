@@ -463,7 +463,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   NSArray<NSString *> *separatedFileNameArr = [response.suggestedFilename componentsSeparatedByString:@"."];
   NSString *fileType = separatedFileNameArr.lastObject;
   
-  if ([fileType isEqualToString:@"jvm1"] || [fileType isEqualToString:@"jsp"] || [fileType isEqualToString:@"aspx"]|| [fileType isEqualToString:@"html"]) {
+  if ([fileType isEqualToString:@"jvm1"] || [fileType isEqualToString:@"jsp"] || [fileType isEqualToString:@"aspx"]|| [fileType isEqualToString:@"html"] || [fileType isEqualToString:@"htm"]) {
     NSString* mimeType = response.MIMEType;
     if (![mimeType isEqualToString:@"text/html"]) {
       //bad suggestedFilename
