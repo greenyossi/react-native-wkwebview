@@ -612,18 +612,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
-  NSString *scheme = navigationAction.request.URL.scheme;
-  if ((navigationAction.targetFrame.isMainFrame || _openNewWindowInWebView) && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
-    [webView loadRequest:navigationAction.request];
-  } else {
-    [webView loadRequest:navigationAction.request];
-    
-    //    UIApplication *app = [UIApplication sharedApplication];
-    //    NSURL *url = navigationAction.request.URL;
-    //    if ([app canOpenURL:url]) {
-    //      [app openURL:url];
-    //    }
-  }
+  [webView loadRequest:navigationAction.request];
   return nil;
 }
 
