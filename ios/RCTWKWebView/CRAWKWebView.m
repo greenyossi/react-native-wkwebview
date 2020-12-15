@@ -463,29 +463,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 }
 #endif
 
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
-{
-  MyEventEmitter* eventEmitter = [MyEventEmitter allocWithZone: nil];
-  NSHTTPURLResponse  *response = (NSHTTPURLResponse *)navigationResponse.response;
-  NSArray<NSString *> *separatedFileNameArr = [response.suggestedFilename componentsSeparatedByString:@"."];
-  NSString *fileType = separatedFileNameArr.lastObject;
-
-  if ([fileType isEqualToString:@"jvm1"] || [fileType isEqualToString:@"jsp"] || [fileType isEqualToString:@"aspx"]|| [fileType isEqualToString:@"html"] || [fileType isEqualToString:@"htm"]) {
-    NSString* mimeType = response.MIMEType;
-    if (![mimeType isEqualToString:@"text/html"]) {
-      //bad suggestedFilename
-      NSLog([NSString stringWithFormat:@"\nmimeType = %@ \nSuggestedFileName = %@ \n", mimeType, separatedFileNameArr.firstObject]);
-      [eventEmitter sendEventWithFileName: separatedFileNameArr.firstObject withMimeType:mimeType];
-    }
-  } else {
-    //good suggestedFilename
-    NSLog([NSString stringWithFormat:@"\nFileType = %@ \nSuggestedFileName = %@ \n", fileType, response.suggestedFilename]);
-    [eventEmitter sendEventWithFileName: response.suggestedFilename];
-  }
-
-  decisionHandler(WKNavigationResponsePolicyAllow);
-}
-
 - (void)webView:(__unused WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
   UIApplication *app = [UIApplication sharedApplication];
@@ -629,6 +606,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
+  MyEventEmitter* eventEmitter = [MyEventEmitter allocWithZone: nil];
+  NSHTTPURLResponse  *response = (NSHTTPURLResponse *)navigationResponse.response;
+  NSArray<NSString *> *separatedFileNameArr = [response.suggestedFilename componentsSeparatedByString:@"."];
+  NSString *fileType = separatedFileNameArr.lastObject;
+  
+  if ([fileType isEqualToString:@"jvm1"] || [fileType isEqualToString:@"jsp"] || [fileType isEqualToString:@"aspx"]|| [fileType isEqualToString:@"html"] || [fileType isEqualToString:@"htm"]) {
+    NSString* mimeType = response.MIMEType;
+    if (![mimeType isEqualToString:@"text/html"]) {
+      //bad suggestedFilename
+      NSLog(@"%@", [NSString stringWithFormat:@"\nmimeType = %@ \nSuggestedFileName = %@ \n", mimeType, separatedFileNameArr.firstObject]);
+      [eventEmitter sendEventWithFileName: separatedFileNameArr.firstObject withMimeType:mimeType];
+    }
+  } else {
+    //good suggestedFilename
+    NSLog(@"%@", [NSString stringWithFormat:@"\nFileType = %@ \nSuggestedFileName = %@ \n", fileType, response.suggestedFilename]);
+    [eventEmitter sendEventWithFileName: response.suggestedFilename];
+  }
+  
   if (_onNavigationResponse) {
     NSDictionary *headers = @{};
     NSInteger statusCode = 200;
